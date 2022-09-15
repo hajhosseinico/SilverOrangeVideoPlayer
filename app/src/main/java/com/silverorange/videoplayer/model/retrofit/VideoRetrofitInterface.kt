@@ -1,8 +1,6 @@
 package com.silverorange.videoplayer.model.retrofit
 
 import retrofit2.http.GET
-import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Api queries
@@ -10,5 +8,5 @@ import kotlin.collections.ArrayList
  */
 interface VideoRetrofitInterface {
     @GET("address")
-    suspend fun getVideoList(): ArrayList<String>
+    suspend fun getVideoList(): List<String>
 }
