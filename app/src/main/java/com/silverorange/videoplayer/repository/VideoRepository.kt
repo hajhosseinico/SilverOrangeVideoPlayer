@@ -2,6 +2,7 @@ package com.silverorange.videoplayer.repository
 
 import com.silverorange.videoplayer.model.retrofit.responsemodels.DataState
 import com.silverorange.videoplayer.model.retrofit.VideoRetrofitInterface
+import com.silverorange.videoplayer.model.retrofit.responsemodels.VideoListNetworkEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -10,8 +11,7 @@ constructor(
     private val videoRetrofitInterface: VideoRetrofitInterface,
 ) {
     suspend fun getVideos(
-        workOffline: Boolean
-    ): Flow<DataState<List<String>>> =
+    ): Flow<DataState<List<VideoListNetworkEntity>>> =
         flow {
             emit(DataState.Loading)
 

@@ -1,5 +1,6 @@
 package com.silverorange.videoplayer.model.retrofit
 
+import com.silverorange.videoplayer.model.retrofit.responsemodels.VideoListNetworkEntity
 import retrofit2.http.GET
 
 /**
@@ -8,5 +9,5 @@ import retrofit2.http.GET
  */
 interface VideoRetrofitInterface {
     @GET("address")
-    suspend fun getVideoList(): List<String>
+    suspend fun getVideoList(): List<VideoListNetworkEntity>
 }
