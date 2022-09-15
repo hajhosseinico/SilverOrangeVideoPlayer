@@ -4,11 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/toolbar_background_color"
+        app:layout_collapseMode="pin" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/toolbar_text_color"
+            android:text="@string/video_player_toolbar_title"
+            android:textSize="24dp"
+            android:layout_gravity="center"
+            android:id="@+id/toolbar_title" />
+
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/mainFragmentContainer"
         android:name="com.silverorange.videoplayer.ui.MainNavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constrainedHeight="true"
         app:defaultNavHost="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:navGraph="@navigation/nav_main" />
