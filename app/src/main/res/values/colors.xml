@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="toolbar_background_color">#000000</color>
     <color name="toolbar_text_color">#ffffff</color>
+
+    <color name="video_detail_title_color">#000000</color>
+    <color name="video_detail_author_color">#4f4f4f</color>
+    <color name="video_detail_description_color">#000000</color>
 </resources>

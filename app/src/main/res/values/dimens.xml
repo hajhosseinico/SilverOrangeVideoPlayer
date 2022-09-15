@@ -1,0 +1,6 @@
+<resources>
+    <dimen name="video_detail_title_margin">16sp</dimen>
+    <dimen name="video_detail_title_text_size">14sp</dimen>
+    <dimen name="video_detail_author_text_size">12sp</dimen>
+    <dimen name="video_detail_description_text_size">10sp</dimen>
+</resources>
