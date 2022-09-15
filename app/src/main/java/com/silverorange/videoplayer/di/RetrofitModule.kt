@@ -30,7 +30,7 @@ object RetrofitModule {
         logging.level = HttpLoggingInterceptor.Level.BODY
 
         return Retrofit.Builder()
-            .baseUrl("base url")
+            .baseUrl("http://localhost:4000")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(OkHttpClient.Builder().addInterceptor(logging).build())
     }

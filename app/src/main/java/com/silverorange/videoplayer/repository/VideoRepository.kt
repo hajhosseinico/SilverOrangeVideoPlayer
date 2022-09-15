@@ -1,6 +1,6 @@
 package com.silverorange.videoplayer.repository
 
-import com.silverorange.videoplayer.model.responsemodels.DataState
+import com.silverorange.videoplayer.model.retrofit.responsemodels.DataState
 import com.silverorange.videoplayer.model.retrofit.VideoRetrofitInterface
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

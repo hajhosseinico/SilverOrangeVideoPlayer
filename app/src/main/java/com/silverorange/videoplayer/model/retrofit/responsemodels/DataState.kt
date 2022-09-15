@@ -1,4 +1,4 @@
-package com.silverorange.videoplayer.model.responsemodels
+package com.silverorange.videoplayer.model.retrofit.responsemodels
 
 import java.lang.Exception
 
