@@ -8,6 +8,6 @@ import retrofit2.http.GET
  * used by retrofit
  */
 interface VideoRetrofitInterface {
-    @GET("address")
+    @GET("/videos")
     suspend fun getVideoList(): List<VideoListNetworkEntity>
 }
