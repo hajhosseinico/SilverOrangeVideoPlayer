@@ -28,49 +28,59 @@
             app:shutter_background_color="#4f4f4f"
             app:surface_type="texture_view" />
 
-        <com.caverock.androidsvg.SVGImageView
-            android:id="@+id/imgPlayPause"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/round_background_with_stroke"
-            android:padding="18dp"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/videoPlayerButtonHolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="100"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="100"
-            app:svg="play.svg" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <com.caverock.androidsvg.SVGImageView
-            android:id="@+id/imgNext"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginStart="24dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/round_background_with_stroke"
-            android:padding="18dp"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="@id/imgPlayPause"
-            app:layout_constraintStart_toEndOf="@id/imgPlayPause"
-            app:layout_constraintTop_toTopOf="@id/imgPlayPause"
-            app:svg="next.svg" />
+            <com.caverock.androidsvg.SVGImageView
+                android:id="@+id/imgPlayPause"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/round_background_with_stroke"
+                android:padding="18dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="100"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="100"
+                app:svg="play.svg" />
 
-        <com.caverock.androidsvg.SVGImageView
-            android:id="@+id/imgPrevious"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginEnd="24dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/round_background_with_stroke"
-            android:padding="18dp"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="@id/imgPlayPause"
-            app:layout_constraintEnd_toStartOf="@id/imgPlayPause"
-            app:layout_constraintTop_toTopOf="@id/imgPlayPause"
-            app:svg="previous.svg" />
+            <com.caverock.androidsvg.SVGImageView
+                android:id="@+id/imgNext"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="24dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/round_background_with_stroke"
+                android:padding="18dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@id/imgPlayPause"
+                app:layout_constraintStart_toEndOf="@id/imgPlayPause"
+                app:layout_constraintTop_toTopOf="@id/imgPlayPause"
+                app:svg="next.svg" />
+
+            <com.caverock.androidsvg.SVGImageView
+                android:id="@+id/imgPrevious"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginEnd="24dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/round_background_with_stroke"
+                android:padding="18dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@id/imgPlayPause"
+                app:layout_constraintEnd_toStartOf="@id/imgPlayPause"
+                app:layout_constraintTop_toTopOf="@id/imgPlayPause"
+                app:svg="previous.svg" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
