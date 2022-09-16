@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
 class VideoDetailFragment : Fragment() {
 
@@ -62,10 +63,12 @@ class VideoDetailFragment : Fragment() {
     }
 
     private fun setDataIsEmptyOrError(errorMessage: String) {
-        TODO("Not yet implemented")
+
     }
 
     private fun setVideoDetail() {
-        TODO("Not yet implemented")
+
     }
+
+
 }
