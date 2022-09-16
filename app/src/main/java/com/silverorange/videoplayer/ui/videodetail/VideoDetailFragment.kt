@@ -48,7 +48,7 @@ class VideoDetailFragment : Fragment() {
                     is DataState.Success<List<VideoListNetworkEntity>> -> {
 
                         if (dataState.data.isNotEmpty()) {
-                            setVideoDetail()
+                            setVideoDetail(getCurrentVideoPosition(dataState.data))
                         } else {
                             setDataIsEmptyOrError(getString(R.string.empty_response))
                         }
@@ -66,8 +66,20 @@ class VideoDetailFragment : Fragment() {
 
     }
 
-    private fun setVideoDetail() {
+    private fun loadVideo(data : VideoListNetworkEntity) {
 
+    }
+
+    private fun setVideoDetail(data: VideoListNetworkEntity) {
+        binding.txtVideoTitle.text = data.title
+        binding.txtVideoAuthor.text = data.author.name
+        binding.txtVideoDescription.text = data.description
+    }
+
+    private fun getCurrentVideoPosition(data: List<VideoListNetworkEntity>): VideoListNetworkEntity {
+        // this methode should validate video count, find out if this is the first or the last video
+        // and also check if there is any next video available
+        return data[0]
     }
 
 
