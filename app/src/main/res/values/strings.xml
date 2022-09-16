@@ -3,4 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="video_player_toolbar_title">Video Player</string>
+
+<!--     API Error-->
+    <string name="empty_response">API returned an empty response</string>
 </resources>

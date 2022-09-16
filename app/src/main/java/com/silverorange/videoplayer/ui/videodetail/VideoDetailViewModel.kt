@@ -1,5 +1,6 @@
 package com.silverorange.videoplayer.ui.videodetail
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,8 +19,13 @@ class VideoDetailViewModel
 constructor(
     private val videoRepository: VideoRepository,
 ) : ViewModel() {
+
     private val _dataState: MutableLiveData<DataState<List<VideoListNetworkEntity>>> =
         MutableLiveData()
+
+    val dataState: LiveData<DataState<List<VideoListNetworkEntity>>>
+        get() = _dataState
+
 
     fun setStateEvent(mainStateEvent: VideoListStateEvent) {
         viewModelScope.launch() {

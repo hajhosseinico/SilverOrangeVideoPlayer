@@ -2,6 +2,7 @@ package com.silverorange.videoplayer.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.silverorange.videoplayer.model.retrofit.VideoRetrofitInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,6 +34,14 @@ object RetrofitModule {
             .baseUrl("http://localhost:4000")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(OkHttpClient.Builder().addInterceptor(logging).build())
+    }
+
+    @Singleton
+    @Provides
+    fun provideRetrofitInterface(retrofit: Retrofit.Builder): VideoRetrofitInterface {
+        return retrofit
+            .build()
+            .create(VideoRetrofitInterface::class.java)
     }
 
 }
