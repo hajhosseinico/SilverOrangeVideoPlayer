@@ -22,9 +22,10 @@
             android:layout_height="320dp"
             app:layout_constrainedHeight="true"
             app:layout_constraintEnd_toEndOf="parent"
+            app:use_controller="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:resize_mode="fill"
+            app:resize_mode="fixed_width"
             app:shutter_background_color="#4f4f4f"
             app:surface_type="texture_view" />
 

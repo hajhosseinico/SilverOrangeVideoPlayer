@@ -1,13 +1,14 @@
 package com.silverorange.videoplayer.ui.videodetail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.caverock.androidsvg.SVG
 import com.silverorange.videoplayer.R
 import com.silverorange.videoplayer.databinding.FragmentVideoDetailBinding
 import com.silverorange.videoplayer.model.retrofit.responsemodels.DataState
@@ -55,7 +56,7 @@ class VideoDetailFragment : Fragment() {
 
                         if (dataState.data.isNotEmpty()) {
                             videoList = dataState.data
-                            setVideoDetail(getCurrentVideoPosition(dataState.data))
+                            setVideoDetail(getCurrentVideoPosition())
                         } else {
                             setDataIsEmptyOrError(getString(R.string.empty_response))
                         }
@@ -81,7 +82,14 @@ class VideoDetailFragment : Fragment() {
         binding.imgPrevious.setOnClickListener {
             getPreviousVideo()?.let { it1 -> loadVideo(it1) }
         }
+
+        binding.videoPlayer.setOnClickListener {
+            if (binding.videoPlayerButtonHolder.visibility == View.GONE) binding.videoPlayerButtonHolder.visibility =
+                View.VISIBLE
+            else binding.videoPlayerButtonHolder.visibility = View.GONE
+        }
     }
+
 
     private fun setDataIsEmptyOrError(errorMessage: String) {
 
@@ -93,41 +101,70 @@ class VideoDetailFragment : Fragment() {
             binding.videoPlayer,
             object : HLSVideoPlayer.VideoPlayerCallbacks {
                 override fun onInitialized() {
-                    Log.i("LOG", "player is initialized")
+                    binding.videoPlayerButtonHolder.visibility = View.VISIBLE
                 }
 
                 override fun onPlaying() {
-                    Log.i("LOG", "player is playing")
+                    val svg = SVG.getFromAsset(context!!.assets, "pause.svg")
+                    binding.imgPlayPause.setSVG(svg)
+                    binding.videoPlayerButtonHolder.visibility = View.GONE
                 }
 
                 override fun onPause() {
-                    Log.i("LOG", "player is paused")
+                    val svg = SVG.getFromAsset(context!!.assets, "play.svg")
+                    binding.imgPlayPause.setSVG(svg)
+                    binding.videoPlayerButtonHolder.visibility = View.VISIBLE
                 }
 
                 override fun onStop() {
-                    Log.i("LOG", "player is stopped")
+                    binding.videoPlayerButtonHolder.visibility = View.GONE
                 }
             })
     }
 
-    private fun setVideoDetail(data: VideoListNetworkEntity) {
-        binding.txtVideoTitle.text = data.title
-        binding.txtVideoAuthor.text = data.author.name
-        binding.txtVideoDescription.text = data.description
+    private fun setVideoDetail(data: VideoListNetworkEntity?) {
+        if (data != null) {
+            resetNextAndPreviousButtonVisibility()
+            binding.txtVideoTitle.text = data.title
+            binding.txtVideoAuthor.text = data.author.name
+            binding.txtVideoDescription.text = data.description
 
-        loadVideo(data)
+            loadVideo(data)
+        }
     }
 
-    private fun getCurrentVideoPosition(data: List<VideoListNetworkEntity>): VideoListNetworkEntity {
-        return data[currentVideoIndex]
+    private fun getCurrentVideoPosition(): VideoListNetworkEntity {
+        return videoList[currentVideoIndex]
     }
 
     private fun getNextVideo(): VideoListNetworkEntity? {
-        return null
+
+        return if (currentVideoIndex < videoList.size - 1) {
+            currentVideoIndex++
+            resetNextAndPreviousButtonVisibility()
+            videoList[currentVideoIndex]
+        } else null
     }
 
     private fun getPreviousVideo(): VideoListNetworkEntity? {
-        return null
+        return if (currentVideoIndex > 0) {
+            currentVideoIndex--
+            resetNextAndPreviousButtonVisibility()
+            videoList[currentVideoIndex]
+        } else null
+    }
+
+    private fun resetNextAndPreviousButtonVisibility() {
+        binding.imgNext.visibility = View.VISIBLE
+        binding.imgPrevious.visibility = View.VISIBLE
+
+        if (currentVideoIndex == videoList.size - 1) {
+            binding.imgNext.visibility = View.GONE
+        }
+
+        if (currentVideoIndex == 0) {
+            binding.imgPrevious.visibility = View.GONE
+        }
     }
 
     override fun onPause() {

@@ -1,7 +1,10 @@
 package com.silverorange.videoplayer.util
 
 import android.content.Context
+import android.util.Log
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Player.Listener
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
@@ -21,9 +24,10 @@ class HLSVideoPlayer() {
     private var isPlayerPlaying = true
     private lateinit var callbacks: VideoPlayerCallbacks
 
-    public fun initPlayer(
+    fun initPlayer(
         context: Context, url: String, pView: PlayerView, _callbacks: VideoPlayerCallbacks
     ) {
+        releasePlayer()
         playerView = pView
         callbacks = _callbacks
         dataSourceFactory = DefaultDataSourceFactory(context, Util.getUserAgent(context, "testapp"))
@@ -34,47 +38,64 @@ class HLSVideoPlayer() {
         exoPlayer = SimpleExoPlayer.Builder(context).build().apply {
             playWhenReady = isPlayerPlaying
             seekTo(currentWindow, playbackPosition)
+            playWhenReady = false
             setMediaItem(mediaItem, false)
             prepare()
         }
         playerView.player = exoPlayer
+
+        exoPlayer.addListener(object : Player.Listener { // player listener
+
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                when (playbackState) { // check player play back state
+                    Player.STATE_READY -> {
+                        Log.i("LOG_Player", "STATE_READY")
+                        if (exoPlayer.isPlaying)
+                            callbacks.onPlaying()
+                        else
+                            callbacks.onPause()
+                    }
+                    Player.STATE_ENDED -> {
+                        callbacks.onStop()
+                    }
+                    else -> {}
+                }
+            }
+        })
+
         callbacks.onInitialized()
     }
 
     private fun releasePlayer() {
-        isPlayerPlaying = exoPlayer.playWhenReady
-        playbackPosition = exoPlayer.currentPosition
-        currentWindow = exoPlayer.currentWindowIndex
-        exoPlayer.release()
+        try {
+            isPlayerPlaying = exoPlayer.playWhenReady
+            playbackPosition = exoPlayer.currentPosition
+            currentWindow = exoPlayer.currentWindowIndex
+            exoPlayer.release()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun onPlayOrResume() {
-        if (Util.SDK_INT <= 23) {
-            playerView.onResume()
-            callbacks.onPlaying()
-        }
+        playerView.player?.play()
+        callbacks.onPlaying()
     }
 
     fun isPlaying(): Boolean {
         return playerView.player?.isPlaying == true
     }
 
-    public fun onPause() {
-        if (Util.SDK_INT <= 23) {
-            playerView.onPause()
-            releasePlayer()
-            callbacks.onPause()
+    fun onPause() {
+        playerView.player?.pause()
+        callbacks.onPause()
 
-        }
     }
 
-    public fun onStop() {
-        if (Util.SDK_INT > 23) {
-            playerView.onPause()
-            releasePlayer()
-            callbacks.onPause()
-
-        }
+    fun onStop() {
+        playerView.player?.stop()
+        releasePlayer()
+        callbacks.onPause()
     }
 
     interface VideoPlayerCallbacks {
