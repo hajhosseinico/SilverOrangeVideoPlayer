@@ -1,10 +1,11 @@
 package com.silverorange.videoplayer.ui.videodetail
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -42,6 +43,8 @@ class VideoDetailFragment : Fragment() {
         subscribeObservers()
         getVideoList()
         setVideoPlayerClickListeners()
+
+        setVideoPlayerHeight()
     }
 
     private fun getVideoList() {
@@ -56,7 +59,7 @@ class VideoDetailFragment : Fragment() {
 
                         if (dataState.data.isNotEmpty()) {
                             videoList = dataState.data
-                            setVideoDetail(getCurrentVideoPosition())
+                            setVideoDetail(videoList[currentVideoIndex])
                         } else {
                             setDataIsEmptyOrError(getString(R.string.empty_response))
                         }
@@ -76,11 +79,11 @@ class VideoDetailFragment : Fragment() {
         }
 
         binding.imgNext.setOnClickListener {
-            getNextVideo()?.let { it1 -> loadVideo(it1) }
+            getNextVideo()?.let { it1 -> setVideoDetail(it1) }
         }
 
         binding.imgPrevious.setOnClickListener {
-            getPreviousVideo()?.let { it1 -> loadVideo(it1) }
+            getPreviousVideo()?.let { it1 -> setVideoDetail(it1) }
         }
 
         binding.videoPlayer.setOnClickListener {
@@ -133,10 +136,6 @@ class VideoDetailFragment : Fragment() {
         }
     }
 
-    private fun getCurrentVideoPosition(): VideoListNetworkEntity {
-        return videoList[currentVideoIndex]
-    }
-
     private fun getNextVideo(): VideoListNetworkEntity? {
 
         return if (currentVideoIndex < videoList.size - 1) {
@@ -164,6 +163,15 @@ class VideoDetailFragment : Fragment() {
 
         if (currentVideoIndex == 0) {
             binding.imgPrevious.visibility = View.GONE
+        }
+    }
+
+    private fun setVideoPlayerHeight() {
+        binding.videoPlayer.post {
+            val screenHeight = Resources.getSystem().displayMetrics.heightPixels
+            val requiredSizeIs = screenHeight * 30 / 100
+            binding.videoPlayer.layoutParams =
+                FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, requiredSizeIs)
         }
     }
 

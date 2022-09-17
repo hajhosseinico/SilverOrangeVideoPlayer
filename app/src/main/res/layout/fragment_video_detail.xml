@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/videoPlayerHolder"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="wrap_content"
         android:background="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,20 +22,22 @@
             android:layout_height="320dp"
             app:layout_constrainedHeight="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:use_controller="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:resize_mode="fixed_width"
             app:shutter_background_color="#4f4f4f"
-            app:surface_type="texture_view" />
+            app:surface_type="texture_view"
+            app:use_controller="false" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/videoPlayerButtonHolder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constrainedHeight="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <com.caverock.androidsvg.SVGImageView
                 android:id="@+id/imgPlayPause"
@@ -90,6 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/videoPlayerHolder">
@@ -104,7 +107,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/video_detail_title_margin"
-                android:text="My Cool Video Title"
                 android:textColor="@color/video_detail_title_color"
                 android:textSize="@dimen/video_detail_title_text_size" />
 
@@ -115,7 +117,6 @@
                 android:layout_marginStart="@dimen/video_detail_title_margin"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="@dimen/video_detail_title_margin"
-                android:text="videoAuthor"
                 android:textColor="@color/video_detail_author_color"
                 android:textSize="@dimen/video_detail_author_text_size" />
 
@@ -125,8 +126,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/video_detail_title_margin"
                 android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
                 android:layout_marginEnd="@dimen/video_detail_title_margin"
-                android:text="videoDescription"
                 android:textColor="@color/video_detail_description_color"
                 android:textSize="@dimen/video_detail_description_text_size" />
 
