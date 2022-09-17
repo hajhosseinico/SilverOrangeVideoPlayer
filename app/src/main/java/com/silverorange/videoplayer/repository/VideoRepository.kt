@@ -11,7 +11,7 @@ constructor(
     private val videoRetrofitInterface: VideoRetrofitInterface,
 ) {
     suspend fun getVideos(
-    ): Flow<DataState<List<VideoListNetworkEntity>>> =
+    ): Flow<DataState<ArrayList<VideoListNetworkEntity>>> =
         flow {
             emit(DataState.Loading)
 

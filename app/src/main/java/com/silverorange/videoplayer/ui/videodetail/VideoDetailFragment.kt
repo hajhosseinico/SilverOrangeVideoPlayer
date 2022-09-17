@@ -1,6 +1,7 @@
 package com.silverorange.videoplayer.ui.videodetail
 
 import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -29,7 +33,7 @@ class VideoDetailFragment : Fragment() {
     private val binding get() = _binding!!
     private var videoPlayer = HLSVideoPlayer()
     private var currentVideoIndex = 0
-    private lateinit var videoList: List<VideoListNetworkEntity>
+    private var videoList = ArrayList<VideoListNetworkEntity>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -55,10 +59,11 @@ class VideoDetailFragment : Fragment() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             CoroutineScope(Dispatchers.Main).launch {
                 when (dataState) {
-                    is DataState.Success<List<VideoListNetworkEntity>> -> {
+                    is DataState.Success<ArrayList<VideoListNetworkEntity>> -> {
 
                         if (dataState.data.isNotEmpty()) {
-                            videoList = dataState.data
+                            sortVideoListByDate(dataState.data)
+                            videoList.addAll(dataState.data)
                             setVideoDetail(videoList[currentVideoIndex])
                         } else {
                             setDataIsEmptyOrError(getString(R.string.empty_response))
@@ -97,6 +102,11 @@ class VideoDetailFragment : Fragment() {
     private fun setDataIsEmptyOrError(errorMessage: String) {
 
     }
+
+    private fun sortVideoListByDate(videoList: ArrayList<VideoListNetworkEntity>) {
+            videoList.sortByDescending { it.publishedAt }
+    }
+
 
     private fun loadVideo(data: VideoListNetworkEntity) {
         videoPlayer.initPlayer(requireContext(),

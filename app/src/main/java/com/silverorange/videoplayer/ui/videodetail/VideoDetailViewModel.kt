@@ -20,10 +20,10 @@ constructor(
     private val videoRepository: VideoRepository,
 ) : ViewModel() {
 
-    private val _dataState: MutableLiveData<DataState<List<VideoListNetworkEntity>>> =
+    private val _dataState: MutableLiveData<DataState<ArrayList<VideoListNetworkEntity>>> =
         MutableLiveData()
 
-    val dataState: LiveData<DataState<List<VideoListNetworkEntity>>>
+    val dataState: LiveData<DataState<ArrayList<VideoListNetworkEntity>>>
         get() = _dataState
 
 

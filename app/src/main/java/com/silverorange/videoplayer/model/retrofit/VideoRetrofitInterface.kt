@@ -9,5 +9,5 @@ import retrofit2.http.GET
  */
 interface VideoRetrofitInterface {
     @GET("/videos")
-    suspend fun getVideoList(): List<VideoListNetworkEntity>
+    suspend fun getVideoList(): ArrayList<VideoListNetworkEntity>
 }
