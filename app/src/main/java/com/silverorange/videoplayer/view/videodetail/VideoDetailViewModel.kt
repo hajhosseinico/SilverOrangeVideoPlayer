@@ -33,11 +33,9 @@ constructor(
         get() = _dataState
 
     fun setStateEvent(mainStateEvent: VideoListStateEvent) {
-        println("main runBlocking      : before launch ${Thread.currentThread().name}")
         viewModelScope.launch(Dispatchers.IO) {
             when (mainStateEvent) {
                 is VideoListStateEvent.GetVideos -> {
-                    println("main runBlocking      : before get videos called ${Thread.currentThread().name}")
                     videoRepository.getVideos()
                         .onEach { dataState ->
                             _dataState.value = dataState

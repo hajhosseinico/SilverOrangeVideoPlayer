@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.caverock.androidsvg.SVG
+import com.silverorange.videoplayer.R
 import com.silverorange.videoplayer.databinding.FragmentVideoDetailBinding
 import com.silverorange.videoplayer.model.retrofit.responsemodels.DataState
 import com.silverorange.videoplayer.model.retrofit.responsemodels.VideoListNetworkEntity
@@ -48,7 +50,6 @@ class VideoDetailFragment() : Fragment() {
     private fun subscribeObservers() {
         viewModel.dataState.observe(viewLifecycleOwner) { dataState ->
             CoroutineScope(Dispatchers.Main).launch {
-                println("main runBlocking      : After Launch ${Thread.currentThread().name}")
                 when (dataState) {
                     is DataState.Success<ArrayList<VideoListNetworkEntity>> -> {
 
@@ -57,16 +58,20 @@ class VideoDetailFragment() : Fragment() {
                             viewModel.videoList.addAll(dataState.data)
                             setVideoDetail(viewModel.videoList[viewModel.currentVideoIndex])
                         } else {
-//                            setDataIsEmptyOrError(getString(R.string.empty_response))
+                            showError(getString(R.string.empty_response))
                         }
                     }
                     is DataState.Error -> {
-//                        setDataIsEmptyOrError(dataState.exception.message.toString())
+                        showError(dataState.exception.message.toString())
                     }
                     else -> {}
                 }
             }
         }
+    }
+
+    private fun showError(error: String) {
+        Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show()
     }
 
     private fun setVideoPlayerClickListeners() {

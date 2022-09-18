@@ -74,12 +74,21 @@ class HLSVideoPlayer() {
     }
 
     fun onPlayOrResume() {
-        playerView.player?.play()
-        callbacks.onPlaying()
+        try {
+            playerView.player?.play()
+            callbacks.onPlaying()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun isPlaying(): Boolean {
-        return playerView.player?.isPlaying == true
+        return try {
+            playerView.player?.isPlaying == true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
     }
 
     fun onPause() {
@@ -93,9 +102,13 @@ class HLSVideoPlayer() {
     }
 
     fun onStop() {
-        playerView.player?.stop()
-        releasePlayer()
-        callbacks.onPause()
+        try {
+            playerView.player?.stop()
+            releasePlayer()
+            callbacks.onPause()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     interface VideoPlayerCallbacks {

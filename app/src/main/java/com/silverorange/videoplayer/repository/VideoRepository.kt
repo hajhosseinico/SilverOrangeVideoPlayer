@@ -15,11 +15,12 @@ constructor(
         flow {
             emit(DataState.Loading)
 
-                try {
-                    val response = videoRetrofitInterface.getVideoList()
-                    emit(DataState.Success(response))
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+            try {
+                val response = videoRetrofitInterface.getVideoList()
+                emit(DataState.Success(response))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emit(DataState.Error(e))
+            }
         }
 }
