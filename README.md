@@ -1,5 +1,5 @@
 # What is this project?
-A demo app which gets a list of HLS videos from an API then shows them with their details.
+A demo app which gets a list of HLS videos from an API then stearm the videos with their details.
 # Main Features
 1. Kotlin
 2. MVVM
