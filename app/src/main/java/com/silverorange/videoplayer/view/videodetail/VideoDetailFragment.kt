@@ -1,17 +1,12 @@
-package com.silverorange.videoplayer.ui.videodetail
+package com.silverorange.videoplayer.view.videodetail
 
-import android.content.res.Configuration
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.caverock.androidsvg.SVG
-import com.silverorange.videoplayer.R
 import com.silverorange.videoplayer.databinding.FragmentVideoDetailBinding
 import com.silverorange.videoplayer.model.retrofit.responsemodels.DataState
 import com.silverorange.videoplayer.model.retrofit.responsemodels.VideoListNetworkEntity
@@ -20,18 +15,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 
 @AndroidEntryPoint
-class VideoDetailFragment : Fragment() {
+class VideoDetailFragment() : Fragment() {
 
     private val viewModel: VideoDetailViewModel by viewModels()
     private var _binding: FragmentVideoDetailBinding? = null
     private val binding get() = _binding!!
-    private var videoPlayer = HLSVideoPlayer()
-    private var currentVideoIndex = 0
-    private var videoList = ArrayList<VideoListNetworkEntity>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -43,7 +34,7 @@ class VideoDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.aspectRatioFrameLayout.setAspectRatio(16f/9f)
+        binding.aspectRatioFrameLayout.setAspectRatio(16f / 9f)
 
         subscribeObservers()
         getVideoList()
@@ -55,39 +46,42 @@ class VideoDetailFragment : Fragment() {
     }
 
     private fun subscribeObservers() {
-        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
+        viewModel.dataState.observe(viewLifecycleOwner) { dataState ->
             CoroutineScope(Dispatchers.Main).launch {
+                println("main runBlocking      : After Launch ${Thread.currentThread().name}")
                 when (dataState) {
                     is DataState.Success<ArrayList<VideoListNetworkEntity>> -> {
 
                         if (dataState.data.isNotEmpty()) {
-                            sortVideoListByDate(dataState.data)
-                            videoList.addAll(dataState.data)
-                            setVideoDetail(videoList[currentVideoIndex])
+                            viewModel.sortVideoListByDate(dataState.data)
+                            viewModel.videoList.addAll(dataState.data)
+                            setVideoDetail(viewModel.videoList[viewModel.currentVideoIndex])
                         } else {
-                            setDataIsEmptyOrError(getString(R.string.empty_response))
+//                            setDataIsEmptyOrError(getString(R.string.empty_response))
                         }
                     }
                     is DataState.Error -> {
-                        setDataIsEmptyOrError(dataState.exception.message.toString())
+//                        setDataIsEmptyOrError(dataState.exception.message.toString())
                     }
                     else -> {}
                 }
             }
-        })
+        }
     }
 
     private fun setVideoPlayerClickListeners() {
         binding.imgPlayPause.setOnClickListener {
-            if (videoPlayer.isPlaying()) videoPlayer.onPause() else videoPlayer.onPlayOrResume()
+            if (viewModel.videoPlayer.isPlaying()) viewModel.videoPlayer.onPause() else viewModel.videoPlayer.onPlayOrResume()
         }
 
         binding.imgNext.setOnClickListener {
-            getNextVideo()?.let { it1 -> setVideoDetail(it1) }
+            viewModel.getNextVideo()?.let { video -> setVideoDetail(video) }
+            resetNextAndPreviousButtonVisibility()
         }
 
         binding.imgPrevious.setOnClickListener {
-            getPreviousVideo()?.let { it1 -> setVideoDetail(it1) }
+            viewModel.getPreviousVideo()?.let { video -> setVideoDetail(video) }
+            resetNextAndPreviousButtonVisibility()
         }
 
         binding.videoPlayer.setOnClickListener {
@@ -97,18 +91,8 @@ class VideoDetailFragment : Fragment() {
         }
     }
 
-
-    private fun setDataIsEmptyOrError(errorMessage: String) {
-
-    }
-
-    private fun sortVideoListByDate(videoList: ArrayList<VideoListNetworkEntity>) {
-        videoList.sortByDescending { it.publishedAt }
-    }
-
-
     private fun loadVideo(data: VideoListNetworkEntity) {
-        videoPlayer.initPlayer(requireContext(),
+        viewModel.videoPlayer.initPlayer(requireContext(),
             data.hlsURL,
             binding.videoPlayer,
             object : HLSVideoPlayer.VideoPlayerCallbacks {
@@ -145,43 +129,26 @@ class VideoDetailFragment : Fragment() {
         }
     }
 
-    private fun getNextVideo(): VideoListNetworkEntity? {
-
-        return if (currentVideoIndex < videoList.size - 1) {
-            currentVideoIndex++
-            resetNextAndPreviousButtonVisibility()
-            videoList[currentVideoIndex]
-        } else null
-    }
-
-    private fun getPreviousVideo(): VideoListNetworkEntity? {
-        return if (currentVideoIndex > 0) {
-            currentVideoIndex--
-            resetNextAndPreviousButtonVisibility()
-            videoList[currentVideoIndex]
-        } else null
-    }
-
     private fun resetNextAndPreviousButtonVisibility() {
         binding.imgNext.visibility = View.VISIBLE
         binding.imgPrevious.visibility = View.VISIBLE
 
-        if (currentVideoIndex == videoList.size - 1) {
+        if (viewModel.currentVideoIndex == viewModel.videoList.size - 1) {
             binding.imgNext.visibility = View.GONE
         }
 
-        if (currentVideoIndex == 0) {
+        if (viewModel.currentVideoIndex == 0) {
             binding.imgPrevious.visibility = View.GONE
         }
     }
 
     override fun onPause() {
         super.onPause()
-        videoPlayer.onPause()
+        viewModel.videoPlayer.onPause()
     }
 
     override fun onStop() {
         super.onStop()
-        videoPlayer.onStop()
+        viewModel.videoPlayer.onStop()
     }
 }

@@ -1,8 +1,8 @@
-package com.silverorange.videoplayer.ui
+package com.silverorange.videoplayer.view.fragmentfactory
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
-import com.silverorange.videoplayer.ui.videodetail.VideoDetailFragment
+import com.silverorange.videoplayer.view.videodetail.VideoDetailFragment
 import javax.inject.Inject
 
 /**

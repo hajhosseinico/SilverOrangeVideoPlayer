@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VideoPlayer"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.MainActivity"
+        <activity android:name=".view.VideoActivity"
             android:exported="true"
             android:configChanges="screenSize|orientation">
             <intent-filter>

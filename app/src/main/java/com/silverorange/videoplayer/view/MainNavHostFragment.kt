@@ -1,7 +1,8 @@
-package com.silverorange.videoplayer.ui
+package com.silverorange.videoplayer.view
 
 import android.content.Context
 import androidx.navigation.fragment.NavHostFragment
+import com.silverorange.videoplayer.view.fragmentfactory.MainFragmentFactory
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

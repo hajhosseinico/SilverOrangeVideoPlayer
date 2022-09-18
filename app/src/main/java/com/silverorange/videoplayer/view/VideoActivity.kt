@@ -1,4 +1,4 @@
-package com.silverorange.videoplayer.ui
+package com.silverorange.videoplayer.view
 
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
@@ -10,10 +10,10 @@ import com.silverorange.videoplayer.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class VideoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_video)
 
         setStatusBarColor()
     }

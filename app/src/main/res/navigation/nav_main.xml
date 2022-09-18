@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/VideoDetailFragment"
-        android:name="com.silverorange.videoplayer.ui.videodetail.VideoDetailFragment"
+        android:name="com.silverorange.videoplayer.view.videodetail.VideoDetailFragment"
         android:label="VideoListFragment" />
 </navigation>
