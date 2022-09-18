@@ -1,27 +1,22 @@
 package com.silverorange.videoplayer.util
 
 import android.content.Context
-import android.util.Log
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.Player.Listener
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.util.Log
 import com.google.android.exoplayer2.util.MimeTypes
-import com.google.android.exoplayer2.util.Util
-
 
 class HLSVideoPlayer() {
-    private lateinit var exoPlayer: SimpleExoPlayer
-    private lateinit var dataSourceFactory: DataSource.Factory
+    private lateinit var exoPlayer: ExoPlayer
     private lateinit var playerView: StyledPlayerView
 
     private var currentWindow = 0
     private var playbackPosition: Long = 0
-    private var isFullscreen = false
     private var isPlayerPlaying = true
     private lateinit var callbacks: VideoPlayerCallbacks
 
@@ -31,30 +26,30 @@ class HLSVideoPlayer() {
         releasePlayer()
         playerView = pView
         callbacks = _callbacks
-        dataSourceFactory = DefaultDataSourceFactory(context, Util.getUserAgent(context, "testapp"))
 
         val mediaItem =
             MediaItem.Builder().setUri(url).setMimeType(MimeTypes.APPLICATION_M3U8).build()
 
-        exoPlayer = SimpleExoPlayer.Builder(context).build().apply {
-            playWhenReady = isPlayerPlaying
+        exoPlayer = ExoPlayer.Builder(context).build().apply {
             seekTo(currentWindow, playbackPosition)
             playWhenReady = false
+            val defaultHttpDataSourceFactory = DefaultHttpDataSource.Factory()
+            val mediaSource =
+                HlsMediaSource.Factory(defaultHttpDataSourceFactory).createMediaSource(mediaItem)
+            setMediaSource(mediaSource)
             setMediaItem(mediaItem, false)
             prepare()
         }
+
         playerView.player = exoPlayer
 
-        exoPlayer.addListener(object : Player.Listener { // player listener
-
-            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                when (playbackState) { // check player play back state
+        exoPlayer.addListener(object : Listener {
+            override fun onPlaybackStateChanged(@Player.State state: Int) {
+                when (state) { // check player play back state
                     Player.STATE_READY -> {
                         Log.i("LOG_Player", "STATE_READY")
-                        if (exoPlayer.isPlaying)
-                            callbacks.onPlaying()
-                        else
-                            callbacks.onPause()
+                        if (exoPlayer.isPlaying) callbacks.onPlaying()
+                        else callbacks.onPause()
                     }
                     Player.STATE_ENDED -> {
                         callbacks.onStop()
@@ -71,7 +66,7 @@ class HLSVideoPlayer() {
         try {
             isPlayerPlaying = exoPlayer.playWhenReady
             playbackPosition = exoPlayer.currentPosition
-            currentWindow = exoPlayer.currentWindowIndex
+            currentWindow = exoPlayer.currentMediaItemIndex
             exoPlayer.release()
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
@@ -91,7 +86,7 @@ class HLSVideoPlayer() {
         try {
             playerView.player?.pause()
             callbacks.onPause()
-        }catch (e : Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
@@ -109,6 +104,4 @@ class HLSVideoPlayer() {
         fun onPause()
         fun onStop()
     }
-
-
 }
