@@ -11,6 +11,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.Log
 import com.google.android.exoplayer2.util.MimeTypes
 
+// Simple custom ExoPlayer
 class HLSVideoPlayer() {
     private lateinit var exoPlayer: ExoPlayer
     private lateinit var playerView: StyledPlayerView

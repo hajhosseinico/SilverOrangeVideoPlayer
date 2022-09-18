@@ -25,6 +25,7 @@ class VideoActivity : AppCompatActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
+        // removing toolbar when orientation changes to landscape and showing it back when it is portrait for better UX EXPERIENCE
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             findViewById<Toolbar>(R.id.toolbar).visibility = View.GONE
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {

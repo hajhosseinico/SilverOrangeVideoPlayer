@@ -13,7 +13,7 @@ class MainFragmentFactory
 @Inject
 constructor() : FragmentFactory() {
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
-
+        // Using factory design pattern to create my fragment and pass them to the navigation component
         return when (className) {
             VideoDetailFragment::class.java.name -> {
                 VideoDetailFragment()

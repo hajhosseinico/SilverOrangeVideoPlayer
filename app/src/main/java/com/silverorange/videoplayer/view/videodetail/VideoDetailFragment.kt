@@ -36,6 +36,7 @@ class VideoDetailFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // setting video view aspect ratio
         binding.aspectRatioFrameLayout.setAspectRatio(16f / 9f)
 
         subscribeObservers()
@@ -44,10 +45,12 @@ class VideoDetailFragment() : Fragment() {
     }
 
     private fun getVideoList() {
+        // triggering the API from View -> ViewModel -> Repository and then get the response from Live data observers
         viewModel.setStateEvent(VideoListStateEvent.GetVideos)
     }
 
     private fun subscribeObservers() {
+        // getting the API response and showing it in the MainTread using coroutines, live data and retrofit
         viewModel.dataState.observe(viewLifecycleOwner) { dataState ->
             CoroutineScope(Dispatchers.Main).launch {
                 when (dataState) {
@@ -96,6 +99,7 @@ class VideoDetailFragment() : Fragment() {
         }
     }
 
+    // initialize the video player and getting the states of the player
     private fun loadVideo(data: VideoListNetworkEntity) {
         viewModel.videoPlayer.initPlayer(requireContext(),
             data.hlsURL,
@@ -123,6 +127,7 @@ class VideoDetailFragment() : Fragment() {
             })
     }
 
+    // setting video player detail including texts and video
     private fun setVideoDetail(data: VideoListNetworkEntity?) {
         if (data != null) {
             resetNextAndPreviousButtonVisibility()
@@ -147,11 +152,13 @@ class VideoDetailFragment() : Fragment() {
         }
     }
 
+    // pausing the video when fragment pauses
     override fun onPause() {
         super.onPause()
         viewModel.videoPlayer.onPause()
     }
 
+    // releasing the memory to prevent MEMORY LEAKS!
     override fun onStop() {
         super.onStop()
         viewModel.videoPlayer.onStop()

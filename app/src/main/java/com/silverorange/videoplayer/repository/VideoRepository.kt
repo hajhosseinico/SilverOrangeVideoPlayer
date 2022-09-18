@@ -10,6 +10,9 @@ class VideoRepository
 constructor(
     private val videoRetrofitInterface: VideoRetrofitInterface,
 ) {
+
+    // I use MVVM Architecture so this is my repository.
+    // If I had API caching, I would have used Cache class interfaces here too (you can see Api caching samples in my GitHub projects)
     suspend fun getVideos(
     ): Flow<DataState<ArrayList<VideoListNetworkEntity>>> =
         flow {

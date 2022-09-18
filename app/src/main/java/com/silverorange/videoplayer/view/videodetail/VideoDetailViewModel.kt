@@ -32,6 +32,7 @@ constructor(
     val dataState: LiveData<DataState<ArrayList<VideoListNetworkEntity>>>
         get() = _dataState
 
+    // this methode will trigger the API on a worker thread using coroutines
     fun setStateEvent(mainStateEvent: VideoListStateEvent) {
         viewModelScope.launch(Dispatchers.IO) {
             when (mainStateEvent) {
@@ -47,15 +48,15 @@ constructor(
         }
     }
 
+    // getting next video is there is any
     internal fun getNextVideo(): VideoListNetworkEntity? {
-
         return if (currentVideoIndex < videoList.size - 1) {
             currentVideoIndex++
 
             videoList[currentVideoIndex]
         } else null
     }
-
+    // getting previous video is there is any
     internal fun getPreviousVideo(): VideoListNetworkEntity? {
         return if (currentVideoIndex > 0) {
             currentVideoIndex--
@@ -63,6 +64,7 @@ constructor(
         } else null
     }
 
+    // sorting videos by date
     internal fun sortVideoListByDate(videoList: ArrayList<VideoListNetworkEntity>) {
         videoList.sortByDescending { it.publishedAt }
     }

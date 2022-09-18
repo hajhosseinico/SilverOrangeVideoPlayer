@@ -15,6 +15,7 @@ object VideoListRepositoryModule {
     @Singleton
     @Provides
     fun provideMovieListRepository(
+        // providing retrofit to the view model
         retrofitInterface: VideoRetrofitInterface,
     ): VideoRepository {
         return VideoRepository(retrofitInterface)

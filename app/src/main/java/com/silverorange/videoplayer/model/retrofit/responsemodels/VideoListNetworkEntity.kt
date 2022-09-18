@@ -3,6 +3,7 @@ package com.silverorange.videoplayer.model.retrofit.responsemodels
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+// I use NetworkEntity because this class is an API response and it will directly be used in the application ny API/APIs
 data class VideoListNetworkEntity(
     @SerializedName("id") @Expose var id: String,
 

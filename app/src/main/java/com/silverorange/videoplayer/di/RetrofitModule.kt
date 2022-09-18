@@ -13,13 +13,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-
+// Hilt modules that would be provided in view model, repository or any other where of the project that we need them
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
     @Singleton
     @Provides
     fun provideGsonBuilder(): Gson {
+        // we need Gson lib to convert the Api response to object
         return GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .create()
     }
@@ -27,7 +28,13 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun provideRetrofit(gson: Gson): Retrofit.Builder {
+        // Building Retrofit before providing it to the repository
         val logging = HttpLoggingInterceptor()
+        // logging the response body to check if we are getting the response or modeling it correctly
+        // I will remove this on release
+        /**
+         * todo remove this before release
+         */
         logging.level = HttpLoggingInterceptor.Level.BODY
 
         return Retrofit.Builder()
@@ -39,6 +46,7 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun provideRetrofitInterface(retrofit: Retrofit.Builder): VideoRetrofitInterface {
+        // To use retrofit in the repository, we just inject this interface to the repository
         return retrofit
             .build()
             .create(VideoRetrofitInterface::class.java)
