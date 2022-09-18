@@ -16,18 +16,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.exoplayer2.ui.PlayerView
-            android:id="@+id/videoPlayer"
+        <com.google.android.exoplayer2.ui.AspectRatioFrameLayout
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="wrap_content"
             app:layout_constrainedHeight="true"
+            android:id="@+id/aspectRatioFrameLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:resize_mode="fixed_width"
+            app:resize_mode="fixed_width">
+
+        <com.google.android.exoplayer2.ui.StyledPlayerView
+            android:id="@+id/videoPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:resize_mode="fit"
             app:shutter_background_color="#4f4f4f"
             app:surface_type="texture_view"
             app:use_controller="false" />
+
+        </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/videoPlayerButtonHolder"
@@ -47,6 +55,8 @@
                 android:background="@drawable/round_background_with_stroke"
                 android:padding="18dp"
                 android:scaleType="fitCenter"
+                android:layout_marginBottom="48dp"
+                android:layout_marginTop="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="100"

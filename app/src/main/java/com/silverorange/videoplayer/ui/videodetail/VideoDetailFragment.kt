@@ -1,7 +1,7 @@
 package com.silverorange.videoplayer.ui.videodetail
 
+import android.content.res.Configuration
 import android.content.res.Resources
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,8 +21,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.Comparator
-import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -44,11 +42,12 @@ class VideoDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.aspectRatioFrameLayout.setAspectRatio(16f/9f)
+
         subscribeObservers()
         getVideoList()
         setVideoPlayerClickListeners()
-
-        setVideoPlayerHeight()
     }
 
     private fun getVideoList() {
@@ -104,7 +103,7 @@ class VideoDetailFragment : Fragment() {
     }
 
     private fun sortVideoListByDate(videoList: ArrayList<VideoListNetworkEntity>) {
-            videoList.sortByDescending { it.publishedAt }
+        videoList.sortByDescending { it.publishedAt }
     }
 
 
@@ -173,15 +172,6 @@ class VideoDetailFragment : Fragment() {
 
         if (currentVideoIndex == 0) {
             binding.imgPrevious.visibility = View.GONE
-        }
-    }
-
-    private fun setVideoPlayerHeight() {
-        binding.videoPlayer.post {
-            val screenHeight = Resources.getSystem().displayMetrics.heightPixels
-            val requiredSizeIs = screenHeight * 30 / 100
-            binding.videoPlayer.layoutParams =
-                FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, requiredSizeIs)
         }
     }
 

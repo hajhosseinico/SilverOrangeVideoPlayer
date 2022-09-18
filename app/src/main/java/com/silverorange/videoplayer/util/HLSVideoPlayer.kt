@@ -7,6 +7,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.Player.Listener
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
@@ -16,7 +17,7 @@ import com.google.android.exoplayer2.util.Util
 class HLSVideoPlayer() {
     private lateinit var exoPlayer: SimpleExoPlayer
     private lateinit var dataSourceFactory: DataSource.Factory
-    private lateinit var playerView: PlayerView
+    private lateinit var playerView: StyledPlayerView
 
     private var currentWindow = 0
     private var playbackPosition: Long = 0
@@ -25,7 +26,7 @@ class HLSVideoPlayer() {
     private lateinit var callbacks: VideoPlayerCallbacks
 
     fun initPlayer(
-        context: Context, url: String, pView: PlayerView, _callbacks: VideoPlayerCallbacks
+        context: Context, url: String, pView: StyledPlayerView, _callbacks: VideoPlayerCallbacks
     ) {
         releasePlayer()
         playerView = pView
@@ -87,8 +88,12 @@ class HLSVideoPlayer() {
     }
 
     fun onPause() {
-        playerView.player?.pause()
-        callbacks.onPause()
+        try {
+            playerView.player?.pause()
+            callbacks.onPause()
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
 
     }
 
